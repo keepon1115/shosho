@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(pnpm --version)",
+      "PowerShell(pnpm --version 2>&1)",
+      "PowerShell(if \\(-not $?\\) { \"pnpm not found\" })",
+      "PowerShell(npm install -g pnpm 2>&1)",
+      "PowerShell(tail -5)",
+      "Bash(pnpm install *)",
+      "Bash(pnpm approve-builds *)",
+      "Bash(node_modules/.bin/tsc --noEmit)"
+    ]
+  }
+}

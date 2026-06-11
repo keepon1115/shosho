@@ -1,15 +1,15 @@
 /* ============================================================
    証書ファイル チラシ (A4 両面) — 案B「式典の品格」
    Build: QR生成 → HTML組版 → PDF/PNG出力
-   使い方:  node build.js "https://QRのリンク先URL"
+   使い方:  node build.js [スマートフォンURL] [LINE URL]
    ============================================================ */
 const fs = require('fs');
 const path = require('path');
 const QRCode = require('qrcode');
 const { chromium } = require('playwright');
 
-// ---- QRのリンク先（引数で差し替え可能。未指定は暫定で会社サイト）----
-const QR_URL = process.argv[2] || 'https://keepon-web.com/';
+const QR_URL_SMARTPHONE = process.argv[2] || 'https://keepon1115.github.io/shosho/';
+const QR_URL_LINE       = process.argv[3] || 'https://lin.ee/u8HJvZj';
 
 const OUT_HTML = path.join(__dirname, 'flyer.html');
 const OUT_PDF  = path.join(__dirname, '証書ファイル_チラシ_A4両面.pdf');
@@ -17,13 +17,12 @@ const OUT_PDF  = path.join(__dirname, '証書ファイル_チラシ_A4両面.pdf
 const f = p => 'file:///' + path.join(__dirname, p).replace(/\\/g, '/');
 
 (async () => {
-  // --- QRコード（紺のモジュール / 背景透過）---
-  const qrSvg = await QRCode.toString(QR_URL, {
-    type: 'svg', margin: 0, errorCorrectionLevel: 'M',
-    color: { dark: '#16243F', light: '#00000000' },
-  });
+  const qrOpts = { type: 'svg', margin: 0, errorCorrectionLevel: 'M',
+                   color: { dark: '#16243F', light: '#00000000' } };
+  const qrSvgSmartphone = await QRCode.toString(QR_URL_SMARTPHONE, qrOpts);
+  const qrSvgLine       = await QRCode.toString(QR_URL_LINE, qrOpts);
 
-  const html = buildHTML(qrSvg);
+  const html = buildHTML(qrSvgSmartphone, qrSvgLine);
   fs.writeFileSync(OUT_HTML, html, 'utf8');
 
   // --- レンダリング（PDF + 各面PNG）---
@@ -48,12 +47,13 @@ const f = p => 'file:///' + path.join(__dirname, p).replace(/\\/g, '/');
   }
 
   await browser.close();
-  console.log('QR →', QR_URL);
+  console.log('QR Smartphone →', QR_URL_SMARTPHONE);
+  console.log('QR LINE →', QR_URL_LINE);
   console.log('PDF →', OUT_PDF);
 })();
 
 /* ============================================================ */
-function buildHTML(qrSvg) {
+function buildHTML(qrSvgSmartphone, qrSvgLine) {
   return `<!DOCTYPE html><html lang="ja"><head><meta charset="utf-8">
 <style>
 @font-face{font-family:"Mincho";src:url("${f('assets/NotoSerifJP.ttf')}");font-weight:100 900;font-display:block;}
@@ -114,19 +114,19 @@ html,body{background:#3a3a3a;}
 /* ===================== 表 (FRONT) ===================== */
 #page-front .inner{justify-content:space-between;}
 
-.f-top{display:flex;flex-direction:column;align-items:center;gap:3.4mm;}
+.f-top{display:flex;flex-direction:column;align-items:center;gap:2mm;}
 .headline{text-align:center;line-height:1.5;letter-spacing:.1em;color:var(--navy);
-  font-weight:600;font-size:25.5pt;margin-top:1mm;}
+  font-weight:600;font-size:18pt;margin-top:1mm;}
 .headline .em{position:relative;}
 .headline .em::after{content:"";position:absolute;left:.04em;right:.04em;bottom:-2mm;height:.7pt;
   background:linear-gradient(90deg,transparent,var(--goldL) 18%,var(--goldD) 82%,transparent);}
 .subline{text-align:center;font-family:"Gothic",sans-serif;font-weight:350;font-size:10pt;
-  letter-spacing:.18em;color:var(--mute);line-height:1.9;margin-top:4.5mm;}
+  letter-spacing:.18em;color:var(--mute);line-height:1.9;margin-top:2mm;}
 
 .hero{display:flex;flex-direction:column;align-items:center;}
 .hero-frame{padding:2.2mm;background:var(--panel);
   box-shadow:0 3mm 9mm rgba(22,36,63,.20),0 0 0 .5pt rgba(126,93,36,.5);}
-.hero-frame img{display:block;width:62mm;height:auto;border:.6pt solid var(--gold);}
+.hero-frame img{display:block;width:80mm;height:auto;border:.6pt solid var(--gold);}
 .hero-cap{font-family:"Gothic",sans-serif;font-weight:350;font-size:8pt;letter-spacing:.22em;
   color:var(--mute);margin-top:3.2mm;text-align:center;}
 
@@ -190,10 +190,10 @@ html,body{background:#3a3a3a;}
 .contact{display:flex;gap:7mm;align-items:stretch;
   border:.8pt solid var(--gold);background:var(--panel);padding:6mm 8mm;}
 .contact .co{flex:1.65;}
-.contact .co .nm{font-size:12.5pt;font-weight:600;letter-spacing:.12em;color:var(--navy);margin-bottom:3mm;}
+.contact .co .nm{font-size:12.5pt;font-weight:600;letter-spacing:.12em;color:var(--navy);margin-bottom:0;}
 .contact .co .row{font-family:"Gothic",sans-serif;font-weight:350;font-size:8.2pt;letter-spacing:.04em;
   color:var(--navy2);line-height:2;white-space:nowrap;}
-.contact .co .row span{display:inline-block;width:12mm;color:var(--gold);letter-spacing:.14em;}
+.contact .co .row span{display:inline-block;width:14mm;color:var(--gold);letter-spacing:.14em;}
 .contact .vline{width:.5pt;background:linear-gradient(180deg,transparent,var(--gold),transparent);}
 .contact .line{flex:.95;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2.6mm;}
 .contact .line .lb{font-size:10.5pt;font-weight:600;letter-spacing:.1em;color:var(--navy);text-align:center;line-height:1.6;}
@@ -213,15 +213,15 @@ html,body{background:#3a3a3a;}
   <div class="inner">
     <div class="f-top">
       <div class="eyebrow">KEEPON&nbsp;&nbsp;CO., LTD.</div>
-      <div class="kicker">名入れ・箔押し　賞状・証書ケース</div>
+      <div class="kicker">名入れ・箔押し　賞状・証書ファイル</div>
       <div class="rule"><span class="ln"></span><span class="dia"></span><span class="ln r"></span></div>
-      <h1 class="headline">大切な証書に、<br>ふさわしい<span class="em">品格</span>を。</h1>
-      <p class="subline">布張り・和紙仕立て。金銀の箔押しで、<br>その一枚にふさわしい荘厳と高級感を。</p>
+      <h1 class="headline">大切な一紙を大切に保管する<br>「<span class="em">賞状・証書ケース</span>」</h1>
+      <p class="subline">名入れ・箔押しでオリジナルを演出します。</p>
     </div>
 
     <div class="hero">
-      <div class="hero-frame"><img src="${f('assets/cert-baptism.png')}" alt="証書ケース実例"></div>
-      <div class="hero-cap">布張り・金箔押し仕様（実例）</div>
+      <div class="hero-frame"><img src="${f('assets/cert-grave.png')}" alt="証書ケース実例"></div>
+      <div class="hero-cap">布張り・銀箔押し仕様（実例）</div>
     </div>
 
     <div class="triad">
@@ -231,11 +231,11 @@ html,body{background:#3a3a3a;}
     </div>
 
     <div class="cartouche">
-      <div class="qr">${qrSvg}</div>
+      <div class="qr">${qrSvgSmartphone}</div>
       <div class="cart-txt">
         <div class="big">スマートフォンで詳しく</div>
         <div class="sm">商品ページ・無料サンプル・お見積り・ご相談</div>
-        <div class="url">keepon-web.com</div>
+        <div class="url">keepon1115.github.io/shosho/</div>
       </div>
     </div>
 
@@ -293,7 +293,11 @@ html,body{background:#3a3a3a;}
 
     <div class="contact">
       <div class="co">
-        <div class="nm">キープオン株式会社</div>
+        <div style="display:flex;align-items:center;gap:3mm;margin-bottom:3mm;">
+          <img src="${f('assets/rogo.png')}" style="height:9mm;" alt="キープオン">
+          <div class="nm">キープオン株式会社</div>
+        </div>
+        <div class="row"><span>運営会社</span>キープオン株式会社</div>
         <div class="row"><span>所在地</span>〒581-0075　大阪府八尾市渋川町5-5-33</div>
         <div class="row"><span>電話</span>072-928-6552</div>
         <div class="row"><span>メール</span>clat2@keepon-web.com</div>
@@ -302,7 +306,7 @@ html,body{background:#3a3a3a;}
       <div class="vline"></div>
       <div class="line">
         <div class="lb">お問い合わせは<br>LINEが便利です</div>
-        <div class="qr">${qrSvg}</div>
+        <div class="qr">${qrSvgLine}</div>
         <div class="sm">商品ページ・お見積り・ご相談</div>
       </div>
     </div>

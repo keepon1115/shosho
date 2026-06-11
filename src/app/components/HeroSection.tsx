@@ -38,7 +38,7 @@ export function HeroSection() {
         </div>
 
         <h1 className="text-white mb-6 px-4 drop-shadow-lg">
-          賞状や証書を大切に保管する<br className="sm:hidden" />「賞状・証書ケース」
+          大切な一紙を大切に保管する<br className="sm:hidden" />「賞状・証書ケース」
         </h1>
         
         <p className="text-xl sm:text-2xl text-white/95 mb-12 leading-relaxed max-w-3xl mx-auto drop-shadow">
