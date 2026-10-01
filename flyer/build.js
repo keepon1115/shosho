@@ -123,12 +123,40 @@ html,body{background:#3a3a3a;}
 .subline{text-align:center;font-family:"Gothic",sans-serif;font-weight:350;font-size:10pt;
   letter-spacing:.18em;color:var(--mute);line-height:1.9;margin-top:2mm;}
 
-.hero{display:flex;flex-direction:column;align-items:center;}
+.hero{display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8mm;}
+.hero-main{display:flex;flex-direction:column;align-items:center;}
 .hero-frame{padding:2.2mm;background:var(--panel);
   box-shadow:0 3mm 9mm rgba(22,36,63,.20),0 0 0 .5pt rgba(126,93,36,.5);}
-.hero-frame img{display:block;width:80mm;height:auto;border:.6pt solid var(--gold);}
+.hero-frame img{display:block;width:74mm;height:auto;border:.6pt solid var(--gold);}
 .hero-cap{font-family:"Gothic",sans-serif;font-weight:350;font-size:8pt;letter-spacing:.22em;
   color:var(--mute);margin-top:3.2mm;text-align:center;}
+
+/* ヒーロー横：一例であることの注記＋カラー・生地選択への誘導 */
+.hero-note{width:60mm;padding:2mm 0 2mm 7mm;border-left:.5pt solid var(--gold);
+  display:flex;flex-direction:column;gap:3.4mm;}
+.hero-note .tag{font-family:"Display",serif;font-size:8pt;letter-spacing:.42em;color:var(--gold);}
+.hero-note .ttl{font-size:13pt;font-weight:600;letter-spacing:.12em;color:var(--navy);line-height:1.5;}
+.hero-note .txt{font-family:"Gothic",sans-serif;font-weight:350;font-size:8.6pt;letter-spacing:.06em;
+  color:var(--navy2);line-height:1.9;}
+.swatches{display:flex;gap:2.2mm;padding:2.4mm 0 .6mm;}
+.swatches i{width:8mm;height:8mm;border:.5pt solid var(--gold);outline:.4pt solid rgba(255,255,255,.7);outline-offset:-1.4pt;
+  box-shadow:0 .6mm 1.4mm rgba(22,36,63,.18);position:relative;overflow:hidden;}
+.swatches i::after{content:"";position:absolute;inset:0;opacity:.35;mix-blend-mode:overlay;
+  background:repeating-linear-gradient(45deg,rgba(255,255,255,.35) 0 .3mm,transparent .3mm .7mm),
+             repeating-linear-gradient(-45deg,rgba(0,0,0,.25) 0 .3mm,transparent .3mm .7mm);}
+.sw1{background:linear-gradient(135deg,#9a2a33,#6e1a22);}
+.sw2{background:linear-gradient(135deg,#2c3c63,#16213b);}
+.sw3{background:linear-gradient(135deg,#2f5a45,#1b3a2b);}
+.sw4{background:linear-gradient(135deg,#3a3a3c,#151516);}
+.sw5{background:linear-gradient(135deg,#efe6d2,#d9ccb0);}
+.swatches .more{font-family:"Gothic",sans-serif;font-size:9pt;color:var(--gold);align-self:center;letter-spacing:.1em;}
+.hero-note .guide{display:flex;align-items:center;gap:2.4mm;margin-top:1.4mm;padding-top:3.2mm;
+  border-top:.5pt solid rgba(166,124,52,.45);}
+.hero-note .guide .g{font-size:9.6pt;font-weight:600;letter-spacing:.08em;color:var(--goldD);line-height:1.6;}
+.hero-note .guide .chev{flex:0 0 auto;width:6.4mm;height:6.4mm;border-radius:50%;
+  background:linear-gradient(135deg,var(--goldL),var(--goldD));position:relative;}
+.hero-note .guide .chev::after{content:"";position:absolute;left:50%;top:44%;width:1.7mm;height:1.7mm;
+  border-right:.9pt solid #fff;border-bottom:.9pt solid #fff;transform:translate(-50%,-50%) rotate(45deg);}
 
 .triad{display:flex;align-items:stretch;justify-content:center;gap:0;margin:1mm auto 0;}
 .triad .t{padding:0 7mm;text-align:center;}
@@ -213,15 +241,24 @@ html,body{background:#3a3a3a;}
   <div class="inner">
     <div class="f-top">
       <div class="eyebrow">KEEPON&nbsp;&nbsp;CO., LTD.</div>
-      <div class="kicker">名入れ・箔押し　賞状・証書ファイル</div>
+      <div class="kicker">名入れ・箔押し　賞状・証書ケース</div>
       <div class="rule"><span class="ln"></span><span class="dia"></span><span class="ln r"></span></div>
-      <h1 class="headline">大切な一紙を大切に保管する<br>「<span class="em">賞状・証書ケース</span>」</h1>
+      <h1 class="headline">賞状や証書を大切に保管する<br>「<span class="em">賞状・証書ケース</span>」</h1>
       <p class="subline">名入れ・箔押しでオリジナルを演出します。</p>
     </div>
 
     <div class="hero">
-      <div class="hero-frame"><img src="${f('assets/cert-grave.png')}" alt="証書ケース実例"></div>
-      <div class="hero-cap">布張り・銀箔押し仕様（実例）</div>
+      <div class="hero-main">
+        <div class="hero-frame"><img src="${f('assets/cert-grave.png')}" alt="証書ケース実例"></div>
+        <div class="hero-cap">布張り・銀箔押し仕様（実例）</div>
+      </div>
+      <div class="hero-note">
+        <div class="tag">SAMPLE</div>
+        <div class="ttl">写真は<br>一例です</div>
+        <div class="txt">表紙のカラー・生地・箔の色は、<br>複数の中からお選びいただけます。</div>
+        <div class="swatches"><i class="sw1"></i><i class="sw2"></i><i class="sw3"></i><i class="sw4"></i><i class="sw5"></i><span class="more">…</span></div>
+        <div class="guide"><span class="g">カラー見本・生地一覧は<br>下のQRコードから</span><span class="chev"></span></div>
+      </div>
     </div>
 
     <div class="triad">
@@ -234,7 +271,7 @@ html,body{background:#3a3a3a;}
       <div class="qr">${qrSvgSmartphone}</div>
       <div class="cart-txt">
         <div class="big">スマートフォンで詳しく</div>
-        <div class="sm">商品ページ・無料サンプル・お見積り・ご相談</div>
+        <div class="sm">カラー・生地見本・無料サンプル・お見積り・ご相談</div>
         <div class="url">keepon1115.github.io/shosho/</div>
       </div>
     </div>
